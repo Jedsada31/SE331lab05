@@ -55,13 +55,15 @@ export default {
   //watchEffect(() => {
   //eslint-disable-next-line no-unused-vars
   beforeRouteEnter(routeTo, rouFrom, next) {
-    EventService.getEvents(2, this.page)
+    EventService.getEvents(2, parseInt(routeTo.query.page) || 1)
       .then((response) => {
-        this.events = response.data
-        this.totalEvents = response.headers['x-total-count']
+        next((comp) => {
+          comp.events = response.data
+          comp.totalEvents = response.headers['x-total-count']
+        })
       })
       .catch((error) => {
-        this.$router.push({ name: 'NetworkError' })
+        next({ name: 'NetworkError' })
         console.log(error)
       })
     //})
