@@ -33,6 +33,7 @@
 // @ is an alias to /src
 import EventCard from '@/components/EventCard.vue'
 import EventService from '@/services/EventService.js'
+import NProgress from 'nprogress'
 //import { watchEffect } from '@vue/runtime-core'
 export default {
   name: 'EventListView',
@@ -55,6 +56,7 @@ export default {
   //watchEffect(() => {
   //eslint-disable-next-line no-unused-vars
   beforeRouteEnter(routeTo, rouFrom, next) {
+    NProgress.start()
     EventService.getEvents(2, parseInt(routeTo.query.page) || 1)
       .then((response) => {
         next((comp) => {
@@ -62,9 +64,11 @@ export default {
           comp.totalEvents = response.headers['x-total-count']
         })
       })
-      .catch((error) => {
+      .catch(() => {
         next({ name: 'NetworkError' })
-        console.log(error)
+      })
+      .finally(() => {
+        NProgress.done()
       })
     //})
   },
