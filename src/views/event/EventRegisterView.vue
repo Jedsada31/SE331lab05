@@ -18,7 +18,7 @@ export default {
         'You are successfully registered for ' + this.event.title
       setTimeout(() => {
         //After 3 seconds remove it
-        this.Gstore.flashMessage = ''
+        this.GStore.flashMessage = ''
       }, 3000)
 
       this.$router.push({
